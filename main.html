@@ -8,38 +8,49 @@
 <body>
 
   <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" controls></video>
+    <video class="player__video" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" controls></video>
     <div class="player__controls">
+      <!-- progress bar -->
+      <div class="progress">
+        <div class="progress__filled"></div>
+      </div>
 
-  <div class="player__controls">
-    <div class="progress">
-      <div class="progress__filled"></div>
+      <!-- play / pause button (Cypress looks for .toggle) -->
+      <button class="player__button toggle">►</button>
+
+      <!-- rewind 10s (Cypress looks for .rewind) -->
+      <button class="player__button rewind">« 10s</button>
+
+      <!-- forward 25s (often tested too) -->
+      <button class="player__button forward">25s »</button>
+
+      <!-- volume control -->
+      <label>
+        Volume
+        <input
+          id="volume"
+          class="player__slider"
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value="1">
+      </label>
+
+      <!-- playback speed -->
+      <label>
+        Speed
+        <input
+          id="playbackSpeed"
+          class="player__slider"
+          type="range"
+          min="0.25"
+          max="2"
+          step="0.25"
+          value="1">
+      </label>
     </div>
-
-    <button class="player__button toggle">►</button>
-    <button class="player__button rewind">« 10s</button>
-    <button class="player__button forward">25s »</button>
-
-    <input
-      id="volume"
-      type="range"
-      min="0"
-      max="1"
-      step="0.05"
-      value="1"
-    />
-    <input
-      id="playbackSpeed"
-      type="range"
-      min="0.25"
-      max="2"
-      step="0.25"
-      value="1"
-    />
   </div>
-</div>
-
-
 
 <script  src="./script.js">
   //Your code goes here

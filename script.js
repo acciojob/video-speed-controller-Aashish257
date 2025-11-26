@@ -1,20 +1,15 @@
-// Grab elements that the tests expect
 const video = document.querySelector('.player__video');
 const toggle = document.querySelector('.toggle');
 const rewindBtn = document.querySelector('.rewind');
-const forwardBtn = document.querySelector('.forward'); // in case there’s a test for this
+const forwardBtn = document.querySelector('.forward');
 const volumeSlider = document.querySelector('#volume');
 const speedSlider = document.querySelector('#playbackSpeed');
 const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress__filled');
 
-// If the player is not on this page, don't run the rest of the code
-if (!video) {
-  // This prevents "Cannot read properties of null"
-  // but doesn't break Cypress
-  // console.warn('No .player__video element found on this page.');
-} else {
-  // ---- Play / Pause ----
+// Guard: only run if the video exists on this page
+if (video) {
+  // Play / Pause toggle
   function togglePlay() {
     if (video.paused) {
       video.play();
@@ -27,7 +22,7 @@ if (!video) {
     toggle.textContent = video.paused ? '►' : '❚ ❚';
   }
 
-  // ---- Volume & Speed ----
+  // Volume & speed handlers
   function handleVolumeChange() {
     video.volume = parseFloat(this.value);
   }
@@ -36,7 +31,7 @@ if (!video) {
     video.playbackRate = parseFloat(this.value);
   }
 
-  // ---- Skip buttons ----
+  // Rewind / Forward
   function rewind() {
     video.currentTime = Math.max(0, video.currentTime - 10);
   }
@@ -45,19 +40,20 @@ if (!video) {
     video.currentTime = Math.min(video.duration, video.currentTime + 25);
   }
 
-  // ---- Progress bar ----
+  // Progress bar update
   function handleProgress() {
     if (!video.duration) return;
     const percent = (video.currentTime / video.duration) * 100;
     progressBar.style.flexBasis = `${percent}%`;
   }
 
+  // Scrub (click/drag on progress)
   function scrub(e) {
     const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
     video.currentTime = scrubTime;
   }
 
-  // ---- Event listeners ----
+  // Event listeners
   video.addEventListener('click', togglePlay);
   video.addEventListener('play', updateButton);
   video.addEventListener('pause', updateButton);
@@ -86,3 +82,13 @@ if (!video) {
     progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
   }
 }
+
+const inputs = document.querySelectorAll('.controls input');
+
+    function handleUpdate() {
+      const suffix = this.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
